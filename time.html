@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/rui_date.css">
+  <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+  <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+  <script src="js/rui_date.js"></script>
+  <script src="js/lunarFun.js"></script>
+</head>
+<body>
+<div class="container">
+  <div class="page0" style="display:block;">
+    <div class="title-papa">
+      <div class="back">上一步</div>
+      <div class="title text-center">确认信息</div>
+      <div class="hidden"></div>
+    </div>
+    <div class="page">
+      <p class="question-type">·  请再次确认以下信息是否正确</p>
+      <div class="div-end">
+        <div class="birth solar" style="display:flex">
+          <div class="mr20 dates">公历</div>
+          <div class="date_input">
+            <input id="demo1" class="demoInput" type="text" data-types="solor" data-toid-date="date1" data-toid-hour="hour1"
+                   name="input_date" readonly="readonly" />
+            <input type="hidden" id="date1" name="date">
+            <input type="hidden" id="hour1" name="hour">
+          </div>
+        </div>
+        <div class="birth lunar" style="display:flex">
+          <span class="mr20 dates">农历</span>
+          <div class="date_input">
+            <input id="demo2" class="demoInput" type="text" data-type="1" data-toid-date="date1" data-toid-hour="hour1"
+                   name="input_date" readonly="readonly" />
+            <input type="hidden" id="date1" name="date">
+            <input type="hidden" id="hour1" name="hour">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+  $(document).ready(function() {
+    var message = {
+			name:'张三',
+			sex:1,
+			birth:'1975-06-25',
+			time:'23:30',
+			tg:[0,5,7,3], 
+			dz:[1,8,3,5]
+		}
+  
+    // 确认信息页
+    function questionEnd(){
+      
+      let year = message.birth.slice(0,4)
+      let month = message.birth.slice(5,7)
+      let day = message.birth.slice(8,10)
+      let hour = message.time
+      $("input[name='input_date']:first").val(year+"年"+month+"月"+day+"日"+" "+hour)
+      let ww = calendar.solar2lunar(year, month, day)
+      if(hour){
+        let a = hour.slice(0,2)
+        if(ww.isLeap){
+          $("input[name='input_date']:last").val(year+"年"+'闰' + ww.lmonth+"月"+ww.lday+"日"+" "+hour)
+        }else{
+          $("input[name='input_date']:last").val(year+"年" + ww.lmonth+"月"+ww.lday+"日"+" "+hour)
+        }
+      }else{
+        $("input[name='input_date']:last").val(year+"年"+ww.lmonth + '月' +ww.lday+"日")
+      }
+    }
+
+    var date1 = new ruiDatepicker().init("#demo1");
+    var date2 = new ruiDatepicker().init("#demo2");
+  })
+</script>
+</html>
